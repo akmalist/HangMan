@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './Hangman.css';
 import { randomWord } from './words';
 
-import img0 from './0.jpg';
-import img1 from './1.jpg';
-import img2 from './2.jpg';
-import img3 from './3.jpg';
-import img4 from './4.jpg';
-import img5 from './5.jpg';
-import img6 from './6.jpg';
+import img0 from './images/0.jpg';
+import img1 from './images/1.jpg';
+import img2 from './images/2.jpg';
+import img3 from './images/3.jpg';
+import img4 from './images/4.jpg';
+import img5 from './images/5.jpg';
+import img6 from './images/6.jpg';
 
 class Hangman extends Component {
   /** by default, allow 6 guesses and use provided gallows images. */
@@ -66,10 +66,19 @@ class Hangman extends Component {
     });
   };
 
-  /** render: render game */
+
+ 
   render() {
-    const gameOver = this.state.nWrong >= this.props.maxWrong;
+    const gameOver =this.state.nWrong >= this.props.maxWrong;
     const altText = `${this.state.nWrong}/${this.props.maxWrong} wrong guesses`;
+    const isWinner = this.guessedWord().join("") === this.state.answer;
+    let gameStat = this.generateButtons();
+    if (isWinner){
+      gameStat ='YOU WON'
+    }
+    if(gameOver){
+      gameStat ="YOU LOST"
+    }
 
     return (
       <div className='Hangman'>
@@ -77,11 +86,12 @@ class Hangman extends Component {
         <img src={this.props.images[this.state.nWrong]} alt={altText} />
         <p className='Hangman-guesses'>Guessed wrong: {this.state.nWrong}</p>
         <p className='Hangman-word'>
-          {!gameOver ? this.guessedWord() : this.state.answer}
-        </p>
+          {!gameOver ? this.guessedWord() : this.state.answer} </p>
+      
         <p className='Hangman-btns'>
-          {!gameOver ? this.generateButtons() : `YOU LOST!`}
+          {gameStat}
         </p>
+       
         <div>
           <button className='Hangman-reset' onClick={this.resetButton}>
             Reset
